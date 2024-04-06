@@ -1,19 +1,34 @@
-import React, { useContext } from "react"
-import { Navigate, Outlet } from "react-router-dom"
-import { AuthContext } from "../auth/AuthContext"
+import React, { useEffect, useContext } from "react"
+import { useNavigate, Outlet } from "react-router-dom"
+import { AuthContext } from "./AuthContext"
 
-const ProtectedRoute = ({ roles }) => {
-  console.log("Entering protected route")
+const ProtectedRoute = ({ role }) => {
+  const navigate = useNavigate()
   const { authUser } = useContext(AuthContext)
-
-  if (!authUser) {
-    console.log("You are not logged in, user is not authenticated")
-    return <Navigate to="/login" replace />
-  }
-  if (!roles.includes(authUser.role)) {
-    return <Navigate to="/unauthorized" replace />
-  }
-  return <Outlet />
 }
 
 export default ProtectedRoute
+
+// import React, { useContext, useEffect } from "react"
+// import { useNavigate, Outlet } from "react-router-dom"
+// import { AuthContext } from "../auth/AuthContext"
+
+// const ProtectedRoute = ({ role }) => {
+//   const { authUser } = useContext(AuthContext)
+//   const { updateState } = useContext(AuthContext)
+
+//   const renderOutlet = () => {
+//     if (authUser) {
+//       console.log("User is authenticated")
+//       return <Outlet /> // Render Outlet if user is authenticated
+//     } else {
+//       console.log("User is not authenticated")
+//       // Redirect to login page or handle unauthorized access
+//       return <Outlet />
+//     }
+//   }
+
+//   renderOutlet()
+// }
+
+// export default ProtectedRoute

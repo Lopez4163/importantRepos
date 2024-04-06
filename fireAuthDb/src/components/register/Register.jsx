@@ -1,39 +1,29 @@
 import React, { useState, useContext } from "react"
 import { Link } from "react-router-dom"
-import { auth, db } from "../../firebase/firebase" // Import auth and db
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import { addDoc, setDoc, doc, collection } from "firebase/firestore" // Import from firestore
+import { AuthContext } from "../auth/AuthContext"
 
 // import "firebase/firestore" // Required for Firestore usage
 
 const Register = () => {
+  const { createUserAndDb } = useContext(AuthContext)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
   const signUp = async e => {
+    console.log("hit signup func", e)
     e.preventDefault()
-
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      )
-
-      const userData = {
-        email,
+      const newUserData = {
         name,
-        role: "student", // Hardcoded role (consider user selection if needed)
+        email,
+        password,
       }
-
-      await setDoc(doc(db, "users", userCredential.user.uid), userData)
-
+      console.log("newUserData constructed", newUserData)
+      await createUserAndDb(newUserData)
       console.log("User created successfully! Data stored in Firestore.")
-      // Handle successful signup (e.g., redirect to login or profile)
     } catch (error) {
       console.error(error, "Signup failed")
-      // Handle signup errors (display user-friendly messages)
     }
   }
 

@@ -10,27 +10,24 @@ import { AuthProvider } from "./components/auth/AuthContext"
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} /> {/* Login at /login */}
-          <Route
+          {/* <Route
             path="/home"
             element={
-              <ProtectedRoute roles={["student"]} /> // Protected Home route
+              <ProtectedRoute role={["student"]}>
+                <Home />
+              </ProtectedRoute> // Protected Home route
             }
-          >
-            <Route index element={<Home />} />{" "}
-            {/* Home as default within ProtectedRoute */}
-          </Route>
+          ></Route> */}
+          <Route path="/home" element={<Home />} />{" "}
           <Route path="/register" element={<Register />} />{" "}
-          {/* Register route */}
           <Route path="/unauthorized" element={<Unauthorized />} />{" "}
-          {/* Unauthorized route */}
-          {/* <Route path="/auth-details" element={<AuthDetails />} /> */}
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 
