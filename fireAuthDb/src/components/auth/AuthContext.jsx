@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -15,6 +14,8 @@ function AuthProvider({ children }) {
   const [authUser, setAuthUser] = useState(null)
   const [updateState, setUpdateState] = useState(false)
   const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+
   const navigate = useNavigate()
 
   async function createUserAndDb(newUserData) {
@@ -50,7 +51,7 @@ function AuthProvider({ children }) {
         loginUserData.password
       )
       console.log("User Signed in successfully")
-      navigate("/home")
+      navigate("/dashboard")
     } catch (error) {
       setError(error)
       console.log("User Signed in failed", error)
@@ -64,7 +65,7 @@ function AuthProvider({ children }) {
       setAuthUser(null)
       console.log("logged out successfully")
       console.log("navigating back to login")
-      navigate("/login")
+      navigate("/")
       console.log("user after logout", authUser)
     } catch (error) {
       console.error(error, "logged out unsuccessfully")
@@ -94,7 +95,6 @@ function AuthProvider({ children }) {
     } catch (error) {
       console.error("Error fetching user data:", error)
       throw error
-    } finally {
     }
   }
   useEffect(() => {
@@ -111,7 +111,8 @@ function AuthProvider({ children }) {
           console.error("Error fetching user data:", error)
           setError(error)
         } finally {
-          setUpdateState(false)
+          console.log("loading onAuthStateChange Completed")
+          setIsLoading(false)
         }
       } else {
         console.log("User is not authenticated")
@@ -130,7 +131,7 @@ function AuthProvider({ children }) {
         handleLogout,
         sendPasswordResetEmail,
         fetchUserData,
-        setUpdateState,
+        isLoading,
       }}
     >
       {children}

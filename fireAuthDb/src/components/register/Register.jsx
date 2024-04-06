@@ -11,7 +11,6 @@ const Register = () => {
   const [password, setPassword] = useState("")
 
   const signUp = async e => {
-    console.log("hit signup func", e)
     e.preventDefault()
     try {
       const newUserData = {
@@ -58,7 +57,7 @@ const Register = () => {
         <button type="submit">Sign Up</button>
       </form>
       <div>
-        <Link to="/login">Login?</Link>
+        <Link to="/">Login?</Link>
       </div>
     </div>
   )
