@@ -127,10 +127,11 @@ function AuthProvider({ children }) {
     if (isNavigating) {
       console.log("Authenticated user:", authUser)
       navigate("/dashboard")
+      setIsNavigating(false)
     } else {
       console.log("User is not authenticated")
     }
-  }, [])
+  }, [isNavigating])
 
   return (
     <AuthContext.Provider
