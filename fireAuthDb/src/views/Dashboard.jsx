@@ -10,6 +10,8 @@ const Dashboard = () => {
       {authUser ? (
         <div>
           <h1>{authUser.email}</h1>
+          <h1>{authUser.role}</h1>
+
           <button onClick={handleLogout}>Logout</button>
         </div>
       ) : (

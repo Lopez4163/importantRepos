@@ -6,29 +6,34 @@ import Dashboard from "../../views/Dashboard" // Import the Dashboard component
 
 const ProtectedRoute = () => {
   const [tracking, setTracking] = useState(true)
-  const { authUser, isLoading, fetchUserData } = useContext(AuthContext)
+  const { authUser, isLoading, isNavigating, setIsNavigating } =
+    useContext(AuthContext)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    console.log("checking user Protected Route:", authUser)
-    if (!isLoading && !authUser) {
-      console.log("User is not authenticated or not found")
-      navigate("/unauthorized")
-    }
-  }, [isLoading])
-
-  useEffect(() => {})
   // useEffect(() => {
-  //   const checkingLoginUser = async => {
-  //     try {
-
-  //     } catch (err) {
-
-  //     }
+  //   console.log("checking user Protected Route:", authUser)
+  //   if (!isLoading && !authUser) {
+  //     console.log("User is not authenticated or not found")
+  //     navigate("/unauthorized")
+  //   } else {
+  //     setIsNavigating(false)
   //   }
-  // }, [])
+  // }, [isLoading])
 
-  if (isLoading) {
+  useEffect(() => {
+    try {
+      if (!isLoading && !authUser) {
+        console.log("User is not authenticated or found")
+        navigate("/unauthorized")
+      }
+    } catch (err) {
+      console.log(err.message)
+    } finally {
+      setIsNavigating(false)
+    }
+  })
+
+  if (isNavigating) {
     return (
       <div>
         <h1>Loading....</h1>
@@ -42,7 +47,6 @@ const ProtectedRoute = () => {
       </div>
     )
   }
-
   return <Dashboard />
 }
 

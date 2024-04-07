@@ -108,9 +108,9 @@ function AuthProvider({ children }) {
           setAuthUser(userData)
           console.log("Authentication state changed:", user)
           setError(null)
-        } catch (error) {
-          console.error("Error fetching user data:", error)
-          setError(error)
+        } catch (err) {
+          console.error("Error fetching user data:", err)
+          setError(err)
         } finally {
           console.log("loading onAuthStateChange Completed")
           setIsLoading(false)
@@ -125,11 +125,10 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     if (isNavigating) {
-      console.log("Authenticated user:", authUser)
+      console.log("navigating to dashboard")
       navigate("/dashboard")
-      setIsNavigating(false)
     } else {
-      console.log("User is not authenticated")
+      console.log("Navigation is complete or Navigatign State is False")
     }
   }, [isNavigating])
 
@@ -143,6 +142,8 @@ function AuthProvider({ children }) {
         sendPasswordResetEmail,
         fetchUserData,
         isLoading,
+        isNavigating,
+        setIsNavigating,
       }}
     >
       {children}
