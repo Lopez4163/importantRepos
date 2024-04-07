@@ -15,6 +15,7 @@ function AuthProvider({ children }) {
   const [updateState, setUpdateState] = useState(false)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isNavigating, setIsNavigating] = useState(false)
 
   const navigate = useNavigate()
 
@@ -51,7 +52,7 @@ function AuthProvider({ children }) {
         loginUserData.password
       )
       console.log("User Signed in successfully")
-      navigate("/dashboard")
+      // navigate("/dashboard")
     } catch (error) {
       setError(error)
       console.log("User Signed in failed", error)
@@ -97,6 +98,7 @@ function AuthProvider({ children }) {
       throw error
     }
   }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async user => {
       console.log("auth state listener hit")
@@ -104,7 +106,6 @@ function AuthProvider({ children }) {
         try {
           const userData = await fetchUserData(user.uid)
           setAuthUser(userData)
-          setUpdateState(true)
           console.log("Authentication state changed:", user)
           setError(null)
         } catch (error) {
@@ -113,13 +114,22 @@ function AuthProvider({ children }) {
         } finally {
           console.log("loading onAuthStateChange Completed")
           setIsLoading(false)
+          setIsNavigating(true)
         }
       } else {
         console.log("User is not authenticated")
-        setAuthUser(null)
       }
     })
     return unsubscribe
+  }, [])
+
+  useEffect(() => {
+    if (isNavigating) {
+      console.log("Authenticated user:", authUser)
+      navigate("/dashboard")
+    } else {
+      console.log("User is not authenticated")
+    }
   }, [])
 
   return (
