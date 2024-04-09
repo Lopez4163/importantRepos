@@ -1,5 +1,9 @@
-import React, { useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
+import { Link } from "react-router-dom"
 import { AuthContext } from "../components/auth/AuthContext"
+import Display from "../components/dashboard/Display"
+import Navbar from "../components/dashboard/Navbar"
+import ProfileInfo from "../components/dashboard/ProfileInfo"
 
 const Dashboard = () => {
   const { authUser, handleLogout } = useContext(AuthContext)
@@ -9,10 +13,9 @@ const Dashboard = () => {
     <div>
       {authUser ? (
         <div>
-          <h1>{authUser.email}</h1>
-          <h1>{authUser.role}</h1>
-
-          <button onClick={handleLogout}>Logout</button>
+          <Navbar />
+          <ProfileInfo />
+          <Display />
         </div>
       ) : (
         <div>

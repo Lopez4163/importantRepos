@@ -1,37 +1,35 @@
 // ProtectedRoute.jsx
 import React, { useContext, useEffect, useState } from "react"
-import { useNavigate, Outlet } from "react-router-dom"
+import { useNavigate, useLocation, Outlet, Navigate } from "react-router-dom"
 import { AuthContext } from "./AuthContext"
-import Dashboard from "../../views/Dashboard" // Import the Dashboard component
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ allowedRole }) => {
   const [tracking, setTracking] = useState(true)
   const { authUser, isLoading, isNavigating, setIsNavigating } =
     useContext(AuthContext)
   const navigate = useNavigate()
-
-  // useEffect(() => {
-  //   console.log("checking user Protected Route:", authUser)
-  //   if (!isLoading && !authUser) {
-  //     console.log("User is not authenticated or not found")
-  //     navigate("/unauthorized")
-  //   } else {
-  //     setIsNavigating(false)
-  //   }
-  // }, [isLoading])
+  const location = useLocation()
 
   useEffect(() => {
-    try {
-      if (!isLoading && !authUser) {
-        console.log("User is not authenticated or found")
-        navigate("/unauthorized")
+    const checkingUser = async () => {
+      try {
+        console.log("role", authUser.role)
+        if (!isLoading && !authUser) {
+          console.log("User is not authenticated or found")
+          navigate("/unauthorized")
+        } else if (authUser.role !== allowedRole) {
+          console.log("User does not have the required role")
+          navigate("/unauthorized")
+        }
+      } catch (err) {
+        console.log(err.message)
+      } finally {
+        setIsNavigating(false)
       }
-    } catch (err) {
-      console.log(err.message)
-    } finally {
-      setIsNavigating(false)
     }
-  })
+
+    checkingUser()
+  }, [allowedRole, authUser, isLoading, navigate, setIsNavigating])
 
   if (isNavigating) {
     return (
@@ -47,7 +45,11 @@ const ProtectedRoute = () => {
       </div>
     )
   }
-  return <Dashboard />
+  return (
+    <div>
+      <Outlet />
+    </div>
+  )
 }
 
 export default ProtectedRoute

@@ -12,7 +12,6 @@ const AuthContext = createContext()
 
 function AuthProvider({ children }) {
   const [authUser, setAuthUser] = useState(null)
-  const [updateState, setUpdateState] = useState(false)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isNavigating, setIsNavigating] = useState(false)
@@ -126,7 +125,7 @@ function AuthProvider({ children }) {
   useEffect(() => {
     if (isNavigating) {
       console.log("navigating to dashboard")
-      navigate("/dashboard")
+      navigate("/student")
     } else {
       console.log("Navigation is complete or Navigatign State is False")
     }

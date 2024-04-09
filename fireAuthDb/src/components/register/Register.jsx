@@ -2,8 +2,6 @@ import React, { useState, useContext } from "react"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../auth/AuthContext"
 
-// import "firebase/firestore" // Required for Firestore usage
-
 const Register = () => {
   const { createUserAndDb } = useContext(AuthContext)
   const [name, setName] = useState("")
